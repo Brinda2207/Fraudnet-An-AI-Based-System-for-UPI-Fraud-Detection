@@ -1,6 +1,8 @@
 flask
 scikit-learn==1.6.1
 xgboost
+lightgbm
 joblib
 numpy
 gunicorn
+tensorflow
