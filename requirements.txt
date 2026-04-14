@@ -1,9 +1,8 @@
 flask
-scikit-learn==1.6.1
+scikit-learn
 xgboost
-lightgbm
 joblib
-numpy<2.0.0
+numpy
 gunicorn
-tensorflow>=2.16.1
-keras>=3.0.0
+tensorflow==2.19.0
+keras==3.13.2
