@@ -5,4 +5,5 @@ lightgbm
 joblib
 numpy<2.0.0
 gunicorn
-tensorflow
+tensorflow>=2.16.1
+keras>=3.0.0
