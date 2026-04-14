@@ -3,6 +3,6 @@ scikit-learn==1.6.1
 xgboost
 lightgbm
 joblib
-numpy
+numpy<2.0.0
 gunicorn
 tensorflow
