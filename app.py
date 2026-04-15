@@ -11,7 +11,6 @@ scaler            = joblib.load('models/scaler.pkl')
 features          = joblib.load('models/feature_list.pkl')
 optimal_threshold = joblib.load('models/optimal_threshold.pkl')
 
-# Build autoencoder architecture matching saved weights (12 features)
 input_layer  = keras.Input(shape=(12,))
 encoder      = keras.layers.Dense(8, activation='relu')(input_layer)
 decoder      = keras.layers.Dense(12, activation='linear')(encoder)
