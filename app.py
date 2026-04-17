@@ -12,6 +12,9 @@ scaler            = joblib.load('models/scaler.pkl')
 features          = joblib.load('models/feature_list.pkl')
 optimal_threshold = joblib.load('models/optimal_threshold.pkl')
 hybrid_threshold  = joblib.load('models/hybrid_threshold.pkl')
+mse_stats = joblib.load('models/mse_stats.pkl')
+_mse_p50 = mse_stats['p50']
+_mse_p95 = mse_stats['p95']
 
 # ── Load Autoencoder weights via h5py (no TensorFlow needed at inference) ────
 # The autoencoder is 2 dense layers: 12 -> 8 -> 12
@@ -94,7 +97,8 @@ def predict():
 
         reconstructed = autoencoder_predict(input_scaled)
         mse      = np.mean(np.power(input_scaled - reconstructed, 2), axis=1)[0]
-        mse_norm = float(np.clip(mse / 0.5, 0, 1))
+        # Normalize MSE: 0 = perfectly normal, 1 = highly anomalous (at p95 level)
+        mse_norm = float(np.clip((mse - _mse_p50) / (_mse_p95 - _mse_p50), 0, 1))
 
         # 70% XGBoost + 30% Autoencoder (matches training notebook)
         hybrid_score = 0.70 * xgb_prob + 0.30 * mse_norm
