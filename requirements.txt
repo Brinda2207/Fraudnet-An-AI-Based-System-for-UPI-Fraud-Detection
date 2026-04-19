@@ -5,3 +5,7 @@ joblib
 numpy
 gunicorn
 h5py
+matplotlib
+pandas
+networkx
+shap
