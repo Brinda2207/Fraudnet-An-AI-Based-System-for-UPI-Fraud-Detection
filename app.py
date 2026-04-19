@@ -5,6 +5,9 @@ import h5py
 import csv
 import os
 from datetime import datetime
+import matplotlib, matplotlib.pyplot as plt, matplotlib.patches as mpatches
+import pandas as pd, networkx as nx, shap, io, base64
+matplotlib.use('Agg')   
 
 # ── Load XGBoost models ───────────────────────────────────────────────────────
 model             = joblib.load('models/final_fraud_model.pkl')
