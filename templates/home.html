@@ -1,3 +1,6 @@
+Home · HTML
+Copy
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -114,6 +117,40 @@ select option { background: #1e293b; color: #e5e7eb; }
 .prob-bar-fill.legit { background: linear-gradient(to right, #10b981, #06b6d4); }
 .prob-bar-label { display: flex; justify-content: space-between; font-size: 12px; color: #64748b; margin-top: 5px; }
  
+
+/* AI EXPLANATION & GRAPH */
+.ai-section {
+    margin-top: 28px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.1);
+    overflow: hidden;
+    animation: fadeIn 0.5s ease;
+}
+.ai-section-header {
+    display: flex; align-items: center; gap: 10px;
+    padding: 14px 20px;
+    background: rgba(255,255,255,0.06);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    cursor: pointer;
+    user-select: none;
+}
+.ai-section-header h3 { font-size: 16px; font-weight: 600; margin: 0; }
+.ai-section-header .badge-pill {
+    font-size: 11px; padding: 3px 10px;
+    border-radius: 20px; font-weight: 600;
+}
+.shap-header  h3 { color: #a78bfa; }
+.shap-header  .badge-pill { background: rgba(167,139,250,0.15); color: #a78bfa; border: 1px solid #a78bfa; }
+.graph-header h3 { color: #38bdf8; }
+.graph-header .badge-pill { background: rgba(56,189,248,0.15); color: #38bdf8; border: 1px solid #38bdf8; }
+.chevron { margin-left: auto; font-size: 14px; color: #64748b; transition: transform 0.3s; }
+.chevron.open { transform: rotate(180deg); }
+.ai-section-body { padding: 20px; }
+.ai-section-body .legend { font-size: 12px; color: #64748b; margin-bottom: 12px; display: flex; gap: 16px; flex-wrap: wrap; }
+.ai-section-body .legend span { display: flex; align-items: center; gap: 5px; }
+.ai-section-body .legend .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.ai-section-body img { width: 100%; border-radius: 10px; display: block; }
+
 /* HISTORY */
 .history { padding: 0 30px 30px; }
 .history h2 { margin-bottom: 16px; color: #38bdf8; font-size: 20px; }
@@ -278,7 +315,43 @@ td { padding: 12px 14px; border-bottom: 1px solid rgba(255,255,255,0.05); color:
         </div>
     </div>
     {% endif %}
- 
+
+    {% if shap_img %}
+    <div class="ai-section">
+        <div class="ai-section-header shap-header" onclick="toggleSection('shap-body', this)">
+            <h3>🧠 AI Explanation</h3>
+            <span class="badge-pill">SHAP Analysis</span>
+            <span class="chevron open">▼</span>
+        </div>
+        <div class="ai-section-body" id="shap-body">
+            <div class="legend">
+                <span><span class="dot" style="background:#ef4444"></span> Pushed toward FRAUD</span>
+                <span><span class="dot" style="background:#3b82f6"></span> Pushed toward LEGITIMATE</span>
+                <span style="color:#94a3b8">Bar length = strength of influence on this prediction</span>
+            </div>
+            <img src="data:image/png;base64,{{ shap_img }}" alt="SHAP explanation waterfall chart">
+        </div>
+    </div>
+    {% endif %}
+
+    {% if graph_img %}
+    <div class="ai-section">
+        <div class="ai-section-header graph-header" onclick="toggleSection('graph-body', this)">
+            <h3>🕸 Transaction Network</h3>
+            <span class="badge-pill">Graph Analysis</span>
+            <span class="chevron open">▼</span>
+        </div>
+        <div class="ai-section-body" id="graph-body">
+            <div class="legend">
+                <span><span class="dot" style="background:#ef4444"></span> Confirmed fraud users</span>
+                <span><span class="dot" style="background:#f39c12"></span> High-risk / mule accounts</span>
+                <span><span class="dot" style="background:#3b82f6"></span> Normal users</span>
+            </div>
+            <img src="data:image/png;base64,{{ graph_img }}" alt="Transaction network graph">
+        </div>
+    </div>
+    {% endif %}
+
     {% if error %}
     <div class="result-box fraud">
         <h3 style="color:#ef4444">⚠ Error</h3>
@@ -323,5 +396,19 @@ document.getElementById('safe').innerText  = s.safe;
 document.getElementById('high').innerText  = s.high;
 </script>
  
+
+<script>
+function toggleSection(bodyId, header) {
+    var body    = document.getElementById(bodyId);
+    var chevron = header.querySelector('.chevron');
+    if (body.style.display === 'none') {
+        body.style.display = 'block';
+        chevron.classList.add('open');
+    } else {
+        body.style.display = 'none';
+        chevron.classList.remove('open');
+    }
+}
+</script>
 </body>
 </html>
