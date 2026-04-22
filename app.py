@@ -31,7 +31,8 @@ _mse_p95          = mse_stats['p95']
 # Original saved hybrid_threshold (0.69) was calibrated on PaySim's crore-scale
 # amounts, making it too conservative for realistic UPI input ranges.
 # 0.40 gives correct fraud detection while keeping legit transactions safe.
-HYBRID_THRESHOLD = 0.40
+HYBRID_THRESHOLD = joblib.load('models/hybrid_threshold.pkl')
+print(f"Loaded hybrid threshold: {HYBRID_THRESHOLD:.4f}")
 
 # ── Load Random Forest for SHAP explanations ─────────────────────────────────
 try:
