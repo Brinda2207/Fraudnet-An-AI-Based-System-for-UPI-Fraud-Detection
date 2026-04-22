@@ -61,26 +61,13 @@ def autoencoder_predict(x):
 # This function adds a small explicit risk boost for high UPI amounts so the
 # model correctly treats ₹50,000+ as elevated-risk in the Indian context.
 def amount_risk_boost(amount):
-    """
-    Returns an additive boost (0.0 to 0.30) based on transaction amount.
-    The PaySim training data mean is ~Rs2.85L so the scaler treats all realistic
-    UPI amounts as below-average. This boost restores amount as a proper risk
-    signal for Indian UPI context.
-    """
-    if amount >= 500000:    # Rs5 lakh+   -> very high risk
-        return 0.30
-    elif amount >= 200000:  # Rs2L-5L     -> high risk
-        return 0.25
-    elif amount >= 100000:  # Rs1L-2L     -> high risk
-        return 0.20
-    elif amount >= 50000:   # Rs50k-1L    -> moderate-high risk
-        return 0.15
-    elif amount >= 25000:   # Rs25k-50k   -> moderate risk
-        return 0.08
-    elif amount >= 10000:   # Rs10k-25k   -> slight risk
-        return 0.04
-    else:
-        return 0.0
+    if amount >= 500000:    return 0.15   # was 0.30
+    elif amount >= 200000:  return 0.12   # was 0.25
+    elif amount >= 100000:  return 0.10   # was 0.20
+    elif amount >= 50000:   return 0.07   # was 0.15
+    elif amount >= 25000:   return 0.04   # was 0.08
+    elif amount >= 10000:   return 0.02   # was 0.04
+    else:                   return 0.0
 
 
 # ── Helper: matplotlib figure → base64 PNG string ────────────────────────────
